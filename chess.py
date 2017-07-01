@@ -2,6 +2,12 @@ from graphics import *
 from random import randint
 
 
+class ChessSquare(Rectangle):
+   def __init__(self,corner1,corner2,chessPiece,color):
+      Rectangle.__init__(self,corner1,corner2)
+      self.chessPiece = chessPiece
+      self.color = color
+
 class ChessPiece:
    def  __init__(self,pos,img,team,state):
        self.pos = pos
@@ -25,8 +31,27 @@ def color_conf(i,j):
 
     else:
         return conf2
-    
 
+
+def set_up_board(squares,numbers,letters,win):
+   for i in range(0,8):
+        for j in range(0,8):
+
+            leftTopCorner = Point((win.getWidth() * i) / 8, (win.getHeight() * j / 8))
+            rightBottomCorner = Point( (win.getWidth() * (i + 1)) / 8,  (win.getHeight() * (j + 1)) / 8 )
+
+            conf = color_conf(i,j)
+            
+            if conf():
+               squares[letters[i] + numbers[j]] = ChessSquare(leftTopCorner,rightBottomCorner, None,"white")
+
+            else :
+                squares[letters[i] + numbers[j]] = ChessSquare(leftTopCorner,rightBottomCorner, None,"black")
+
+   for key in squares:
+      sq = squares[key]
+      sq.setFill(sq.color)
+      sq.draw(win)
 
 def main():
 
@@ -37,55 +62,15 @@ def main():
 
     A1 = ChessSquare(Point(400,400),Point(800,800),"foo","white")
     
-    
-    squares = []
+    squares = {}
     numbers = ["1","2","3","4","5","6","7","8"]
     letters  = ["A","B","C","D","E","F","G","H"]
+
+    set_up_board(squares,numbers,letters,win)
     
-
-    for i in range(0,8):
-        for j in range(0,8):
-
-            leftTopCorner = Point((x_size * i) / 8, (y_size * j / 8))
-            rightBottomCorner = Point( (x_size * (i + 1)) / 8,  (y_size * (j + 1)) / 8 )
-
-            conf = color_conf(i,j)
-            
-            if conf():
-                squares.append(ChessSquare(leftTopCorner,rightBottomCorner,letters[i] + numbers[j],
-                                           "white"))
-
-            else :
-                squares.append(ChessSquare(leftTopCorner,rightBottomCorner,letters[i] + numbers[j]
-                                           ,"black"))
-
-    for cs in squares:        
-        cs.setFill(cs.color)
-        cs.draw(win)
-                           
     
     while inProgress:
         pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+     
 main()
